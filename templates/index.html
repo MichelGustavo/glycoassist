@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GlycoAssist</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <div class="marca-icone" aria-hidden="true">G</div>
+      <div>
+        <h1>GlycoAssist</h1>
+        <p>Assistente para consulta de histórico, medições e documentos</p>
+      </div>
+    </div>
+    <div class="acoes-topo">
+      <button id="btn-limpar-chat" class="botao-secundario">Limpar conversa</button>
+      <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit" class="botao-sair" aria-label="Sair da conta">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="painel-lateral">
+      <section class="bloco-painel">
+        <label for="select-paciente" class="rotulo-campo">Paciente</label>
+        <select id="select-paciente">
+          <option value="">Carregando pacientes...</option>
+        </select>
+        <div id="dados-paciente" class="dados-paciente"></div>
+      </section>
+
+      <section class="bloco-painel">
+        <h2>Medições recentes</h2>
+        <div class="tabela-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Glicemia</th>
+                <th>HbA1c</th>
+                <th>Peso</th>
+              </tr>
+            </thead>
+            <tbody id="lista-medicoes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="bloco-painel">
+        <h2>Medicamentos</h2>
+        <ul id="lista-medicamentos" class="lista"></ul>
+      </section>
+
+      <section class="bloco-painel">
+        <h2>Documentos</h2>
+        <ul id="lista-documentos" class="lista"></ul>
+        <label for="input-pdf" class="botao-upload">Enviar PDF</label>
+        <input id="input-pdf" type="file" accept="application/pdf" hidden />
+        <p class="ajuda">O PDF é salvo em <code>uploads/</code>; metadados e texto extraído ficam no PostgreSQL.</p>
+      </section>
+    </aside>
+
+    <section class="chat-area">
+      <div class="aviso">
+        Este protótipo organiza e explica dados registrados. Ele não substitui avaliação médica e não deve alterar tratamentos.
+      </div>
+
+      <div id="chat" class="chat">
+        <div class="mensagem assistente">
+          <span class="rotulo">Assistente</span>
+          Selecione um paciente e escolha uma das sugestões abaixo para começar.
+        </div>
+      </div>
+
+      <section class="sugestoes" aria-labelledby="titulo-sugestoes">
+        <div class="sugestoes-cabecalho">
+          <span class="sugestoes-icone" aria-hidden="true">✦</span>
+          <div>
+            <h2 id="titulo-sugestoes">Comece por aqui</h2>
+            <p>Selecione um paciente e escolha uma pergunta.</p>
+          </div>
+        </div>
+        <div class="sugestoes-lista">
+          <button type="button" class="sugestao" data-pergunta="Como está minha glicemia nas medições mais recentes?">Como está minha glicemia recente?</button>
+          <button type="button" class="sugestao" data-pergunta="Como minha HbA1c evoluiu ao longo do tempo?">Como minha HbA1c evoluiu?</button>
+          <button type="button" class="sugestao" data-pergunta="Resuma os medicamentos que estou usando atualmente.">Resuma meus medicamentos</button>
+          <button type="button" class="sugestao" data-pergunta="O que aparece no meu exame mais recente?">Explique meu último exame</button>
+        </div>
+      </section>
+
+      <form id="form-mensagem" class="barra-envio">
+        <input
+          id="campo-mensagem"
+          type="text"
+          placeholder="Escreva sua pergunta..."
+          autocomplete="off"
+        />
+        <button type="submit" id="btn-enviar">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
